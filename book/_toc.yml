@@ -15,17 +15,6 @@ parts:
 - caption: Tutorial
   chapters:
     - file: chapters/motivation
-    - file: chapters/methods
-    - file: chapters/data
-    - file: chapters/development
-    - file: chapters/training
-    - file: chapters/evaluation
-    - file: chapters/workflow
-    - file: chapters/reproducibility
-    - file: chapters/conclusion
-    - file: chapters/todo
-    - file: chapters/questions
-    - file: chapters/troubleshooting
 
 - caption: Example Notebook
   chapters:

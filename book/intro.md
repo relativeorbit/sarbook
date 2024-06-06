@@ -1,3 +1,3 @@
-# Welcome to the GeoSMART Jupyter Book!
+# Welcome to the SARBook!
 
-**GeoS**cience **MA**chine Learning **R**esources and **T**raining (GeoSMART) framework provides an educational pathway that provides a foundation in open source scientific ecosystems and progresses through general ML theory, toolkits and deployment on Cloud computing.
+Just testing JupyterBook ad GitHub Actions

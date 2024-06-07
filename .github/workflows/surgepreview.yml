@@ -34,19 +34,19 @@ jobs:
 
       - name: Build JupyterBook
         run: |
-          jupyter-book build ./ --warningiserror --keep-going
+          jb build book
 
       - name: Dump Build Logs
         if: always()
         run: |
-          if (test -a _build/html/reports/*log); then cat _build/html/reports/*log ; fi
+          if (test -a book/_build/html/reports/*log); then cat book/_build/html/reports/*log ; fi
 
       - name: Install Surge.sh
         uses: actions/setup-node@v4
 
       - run: npm install -g surge
 
-      - run: surge ./_build/html {{env.PREVIEW_URL}} --token $SURGE_TOKEN
+      - run: surge .book/_build/html {{env.PREVIEW_URL}} --token $SURGE_TOKEN
         env:
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
 

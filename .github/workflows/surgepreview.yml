@@ -46,7 +46,7 @@ jobs:
 
       - run: npm install -g surge
 
-      - run: surge .book/_build/html {{env.PREVIEW_URL}} --token $SURGE_TOKEN
+      - run: surge ./book/_build/html {{env.PREVIEW_URL}} --token $SURGE_TOKEN
         env:
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
 

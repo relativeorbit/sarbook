@@ -1,0 +1,55 @@
+name: Surge Preview
+
+on: [pull_request_target]
+
+permissions:
+  pull-requests: write # allow surge-preview to create/update PR comments
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    # NOTE: need required reviewers in this env to protect secrets
+    # https://dev.to/petrsvihlik/using-environment-protection-rules-to-secure-secrets-when-building-external-forks-with-pullrequesttarget-hci
+    environment: SurgePreviewPR
+    env:
+      PREVIEW_URL: https://{{repository.owner}}-{{repository.name}}-{{job.name}}-pr-{{pr.number}}.surge.sh
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install Conda environment with Micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: environment.yml
+          cache-environment: true
+
+      - name: Build JupyterBook
+        run: |
+          jupyter-book build ./ --warningiserror --keep-going
+
+      - name: Dump Build Logs
+        if: always()
+        run: |
+          if (test -a _build/html/reports/*log); then cat _build/html/reports/*log ; fi
+
+      - name: Install Surge.sh
+        uses: actions/setup-node@v4
+
+      - run: npm install -g surge
+
+      - run: surge ./_build/html {{env.PREVIEW_URL}} --token $SURGE_TOKEN
+        env:
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+
+      - name: Add URL to Summary
+        run: |
+          echo "#### :rocket: Preview deployed at {{env.PREVIEW_URL}}" >> $GITHUB_STEP_SUMMARY

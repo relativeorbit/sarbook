@@ -14,14 +14,23 @@ concurrency: preview-${{ github.ref }}
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Conda environment with Micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: environment.yml
+          cache-environment: true
+
       - name: Install and Build
         if: github.event.action != 'closed' 
         run: |
-          run: jb build book
+          jb build book
 
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1

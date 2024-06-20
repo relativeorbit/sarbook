@@ -25,10 +25,6 @@ jobs:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
 
-      - name: Run surge list
-        run: |
-          surge list
-
       - name: Manage Surge deployment
         id: preview_step
         uses: afc163/surge-preview@v1

@@ -1,6 +1,9 @@
 name: PR Preview
 
-on: [pull_request]
+on:
+  pull_request:
+    # when using teardown: 'true', add default event types + closed event type
+    types: [opened, synchronize, reopened, closed]
 
 permissions:
   pull-requests: write # allow surge-preview to create/update PR comments
@@ -11,7 +14,7 @@ concurrency:
 
 jobs:
   preview:
-    environment: SurgePreviewPR
+    # environment: SurgePreviewPR
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -39,7 +42,7 @@ jobs:
           teardown: true
           failOnError: true
           # website already built in previous step, just list existing folder
-          build: ls -tlrh *
+          build: echo 'skipping website build'
 
       - name: Format preview url
         id: format_url

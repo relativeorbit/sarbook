@@ -20,6 +20,10 @@ jobs:
     if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
 
     steps:
+      - name: New step
+        run: |
+          echo "run some new code"
+    
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}

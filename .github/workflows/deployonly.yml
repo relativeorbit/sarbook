@@ -24,8 +24,6 @@ jobs:
         with:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
-          # Otherwise preview URL includes subfolder (https://relativeorbit-sarbook-preview-pr-3.surge.sh/html/index.html)
-          path: ./
 
       - name: List directory contents
         run: |
@@ -41,7 +39,7 @@ jobs:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           build: echo 'Uploading html/ folder contents to Surge.sh...'
-          dist: ./
+          dist: ./html # NOTE: matchupload_artifact name: html
           failOnError: true
 
       - name: Get the preview_url

@@ -11,6 +11,7 @@ concurrency:
 
 jobs:
   preview:
+    environment: SurgePreviewPR
     runs-on: ubuntu-latest
     defaults:
       run:

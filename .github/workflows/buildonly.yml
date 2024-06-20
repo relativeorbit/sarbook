@@ -34,7 +34,7 @@ jobs:
           jb build book
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           path: book/_build/html
 

@@ -39,7 +39,7 @@ jobs:
           teardown: true
           failOnError: true
           # website already built in previous step, just list existing folder
-          build: ls -tlrh book/_build/*
+          build: ls -tlrh *
 
       - name: Format preview url
         id: format_url

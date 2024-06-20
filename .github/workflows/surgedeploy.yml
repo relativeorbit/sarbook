@@ -11,6 +11,7 @@ concurrency:
 
 jobs:
   preview:
+    # environment: SurgePreviewPR
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,8 +36,10 @@ jobs:
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           dist: book/_build/html
-          teardown: 'true'
-          build: npm install -g surge
+          teardown: true
+          failOnError: true
+          # website already built in previous step, just list existing folder
+          build: echo 'skipping website build'
 
       - name: Format preview url
         id: format_url

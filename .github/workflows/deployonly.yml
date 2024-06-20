@@ -10,7 +10,7 @@ permissions:
   pull-requests: write # allow surge-preview to create/update PR comments
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.id }}
   cancel-in-progress: true
 
 jobs:
@@ -40,6 +40,7 @@ jobs:
           pwd
           ls -lh
           ls html
+          ls html/*
           du -sh *
 
       # - name: download dist artifact
@@ -54,7 +55,7 @@ jobs:
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          build: ls html/*
+          build: ls *
           dist: html
           failOnError: true
           teardown: true

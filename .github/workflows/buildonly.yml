@@ -3,7 +3,7 @@ name: PR Build
 on:
   pull_request:
     # when using teardown: 'true', add default event types + closed event type
-    #types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, reopened, closed]
 
 #permissions:
 #  pull-requests: write # allow surge-preview to create/update PR comments
@@ -38,27 +38,3 @@ jobs:
         with:
           name: html
           path: book/_build/html
-
-      # - name: Build and Publish to Surge
-      #   id: preview_step
-      #   uses: afc163/surge-preview@v1
-      #   with:
-      #     surge_token: ${{ secrets.SURGE_TOKEN }}
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     dist: book/_build/html
-      #     teardown: true
-      #     failOnError: true
-      #     # website already built in previous step, just list existing folder
-      #     build: echo 'skipping website build'
-
-      # - name: Format preview url
-      #   id: format_url
-      #   run: |
-      #     echo "url_text=:rocket: Preview deployed at https://${{ steps.preview_step.outputs.preview_url }}" >> $GITHUB_OUTPUT
-
-      # - name: Get the preview_url
-      #   run: echo "${{ steps.format_url.outputs.url_text }}"
-
-      # - name: Generate summary
-      #   run: |
-      #     echo "#### ${{ steps.format_url.outputs.url_text }}" >> $GITHUB_STEP_SUMMARY

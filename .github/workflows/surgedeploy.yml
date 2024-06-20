@@ -36,6 +36,7 @@ jobs:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           dist: ./book/_build/html
           teardown: 'true'
+          build: ls -ltrh
 
       - name: Format preview url
         id: format_url

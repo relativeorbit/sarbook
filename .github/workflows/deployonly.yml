@@ -39,7 +39,7 @@ jobs:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           build: echo 'Uploading html/ folder contents to Surge.sh...'
-          dist: ./html # NOTE: matchupload_artifact name: html
+          dist: html # NOTE: matchupload_artifact name: html
           failOnError: true
 
       - name: Get the preview_url

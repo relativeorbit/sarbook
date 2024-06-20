@@ -1,6 +1,9 @@
 name: PR Preview
 
-on: [pull_request]
+on:
+  pull_request:
+    # when using teardown: 'true', add default event types + closed event type
+    types: [opened, synchronize, reopened, closed]
 
 permissions:
   pull-requests: write # allow surge-preview to create/update PR comments

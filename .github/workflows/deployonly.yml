@@ -1,0 +1,50 @@
+name: PR Preview
+
+on:
+  workflow_run:
+    workflows: ["PR Build"]
+    types:
+      - completed
+
+permissions:
+  pull-requests: write # allow surge-preview to create/update PR comments
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    # environment: SurgePreviewPR
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Debug step
+        run: |
+          echo "workflow_run: ${{toJSON(github.event.workflow_run)}}"
+          echo "workflow_run.head_sha: ${{github.event.workflow_run.head_sha}}"
+
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.event.workflow_run.id }}
+          # name: my-other-artifact
+          # github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
+          # repository: actions/toolkit
+          # run-id: 1234
+
+      # - name: download dist artifact
+      #   uses: dawidd6/action-download-artifact@v5
+      #   with:
+      #     workflow: ${{ github.event.workflow_run.workflow_id }}
+      #     name: pr-build-dist  # must be kept in sync with the artifact name downloaded in the build stage
+      #     path: site/
+
+      - name: Manage Surge deployment
+        uses: afc163/surge-preview@v1
+        with:
+          surge_token: ${{ secrets.SURGE_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          build: echo done
+          dist: book/_build/html
+          failOnError: true

@@ -25,6 +25,10 @@ jobs:
           environment-file: environment.yml
           cache-environment: true
 
+      - name: Build JupyterBook
+        run: |
+          jb build book
+
       - name: Build and Publish to Surge
         id: preview_step
         uses: afc163/surge-preview@v1
@@ -32,8 +36,6 @@ jobs:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           dist: ./book/_build/html
           teardown: 'true'
-          build: |
-            jb build book
 
       - name: Format preview url
         id: format_url

@@ -29,10 +29,15 @@ jobs:
         with:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
+          path: html
           # name: my-other-artifact
           # github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
           # repository: actions/toolkit
           # run-id: 1234
+
+      - name: List directory contents
+        run: |
+          ls ltrh html
 
       # - name: download dist artifact
       #   uses: dawidd6/action-download-artifact@v5
@@ -46,6 +51,6 @@ jobs:
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          build: echo done
-          dist: book/_build/html
+          build: echo 'Uploading PR Preview to Surge!'
+          dist: html
           failOnError: true

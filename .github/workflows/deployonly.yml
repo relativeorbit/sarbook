@@ -20,20 +20,12 @@ jobs:
     if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      # - name: Debug step
-      #   run: |
-      #     echo "workflow_run: ${{toJSON(github.event.workflow_run)}}"
-      #     echo "workflow_run.head_sha: ${{github.event.workflow_run.head_sha}}"
-
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
-          path: artifact
-          # name: my-other-artifact
-          # github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
-          # repository: actions/toolkit
-          # run-id: 1234
+          # Otherwise preview URL includes subfolder (https://relativeorbit-sarbook-preview-pr-3.surge.sh/html/index.html)
+          path: ./
 
       - name: List directory contents
         run: |
@@ -42,18 +34,15 @@ jobs:
           ls *
           du -sh *
 
-      # - name: download dist artifact
-      #   uses: dawidd6/action-download-artifact@v5
-      #   with:
-      #     workflow: ${{ github.event.workflow_run.workflow_id }}
-      #     name: pr-build-dist  # must be kept in sync with the artifact name downloaded in the build stage
-      #     path: site/
-
       - name: Manage Surge deployment
+        id: preview_step
         uses: afc163/surge-preview@v1
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           build: echo 'Uploading html/ folder contents to Surge.sh...'
-          dist: artifact/html
+          dist: ./
           failOnError: true
+
+      - name: Get the preview_url
+        run: echo "url => ${{ steps.preview_step.outputs.preview_url }}"

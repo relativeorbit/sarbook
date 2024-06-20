@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   preview:
-    environment: SurgePreviewPR
+    # environment: SurgePreviewPR
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -39,7 +39,7 @@ jobs:
           teardown: true
           failOnError: true
           # website already built in previous step, just list existing folder
-          build: ls -tlrh *
+          build: echo 'skipping website build'
 
       - name: Format preview url
         id: format_url

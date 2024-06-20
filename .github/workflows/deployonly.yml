@@ -29,6 +29,7 @@ jobs:
         with:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
+          path: html
           # name: my-other-artifact
           # github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
           # repository: actions/toolkit
@@ -37,7 +38,8 @@ jobs:
       - name: List directory contents
         run: |
           pwd
-          ls -ltrh *
+          ls -lh
+          ls html
           du -sh *
 
       # - name: download dist artifact

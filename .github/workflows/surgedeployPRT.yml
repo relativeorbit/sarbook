@@ -1,0 +1,78 @@
+name: PRT Preview
+
+# based on https://michaelheap.com/access-secrets-from-forks/
+on:
+  pull_request_target:
+    # when using teardown: 'true', add default event types + closed event type
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  pull-requests: write # allow surge-preview to create/update PR comments
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    # environment: SurgePreviewPR
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - name: Get User Permission
+        id: checkAccess
+        uses: actions-cool/check-user-permission@v2
+        with:
+          require: write
+          username: ${{ github.triggering_actor }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check User Permission
+        if: steps.checkAccess.outputs.require-result == 'false'
+        run: |
+          echo "${{ github.triggering_actor }} does not have permissions on this repo."
+          echo "Current permission level is ${{ steps.checkAccess.outputs.user-permission }}"
+          echo "Job originally triggered by ${{ github.actor }}"
+          exit 1
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }} # This is dangerous without the first access check
+
+      - name: Install Conda environment with Micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: environment.yml
+          cache-environment: true
+
+      - name: Build JupyterBook
+        run: |
+          jb build book
+
+      - name: Build and Publish to Surge
+        id: preview_step
+        uses: afc163/surge-preview@v1
+        with:
+          surge_token: ${{ secrets.SURGE_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dist: book/_build/html
+          teardown: true
+          failOnError: true
+          # website already built in previous step, just list existing folder
+          build: echo 'skipping website build'
+
+      - name: Format preview url
+        id: format_url
+        run: |
+          echo "url_text=:rocket: Preview deployed at https://${{ steps.preview_step.outputs.preview_url }}" >> $GITHUB_OUTPUT
+
+      - name: Get the preview_url
+        run: echo "${{ steps.format_url.outputs.url_text }}"
+
+      - name: Generate summary
+        run: |
+          echo "#### ${{ steps.format_url.outputs.url_text }}" >> $GITHUB_STEP_SUMMARY

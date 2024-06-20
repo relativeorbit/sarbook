@@ -56,6 +56,5 @@ jobs:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           build: echo 'Uploading html/ folder contents to Surge.sh...'
-          dist: html
+          dist: html/
           failOnError: true
-          teardown: true

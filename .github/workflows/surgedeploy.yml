@@ -38,7 +38,8 @@ jobs:
           dist: book/_build/html
           teardown: true
           failOnError: true
-          # build: npm install -g surge
+          # website already built in previous step, just list existing folder
+          build: ls -tlrh book/_build/*
 
       - name: Format preview url
         id: format_url

@@ -37,7 +37,9 @@ jobs:
 
       - name: List directory contents
         run: |
-          ls -ltrh */*
+          pwd
+          ls -ltrh
+          du -sh *
 
       # - name: download dist artifact
       #   uses: dawidd6/action-download-artifact@v5
@@ -51,7 +53,7 @@ jobs:
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          build: echo 'Uploading PR Preview to Surge!'
+          build: ls html
           dist: html
           failOnError: true
           teardown: true

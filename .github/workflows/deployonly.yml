@@ -20,10 +20,10 @@ jobs:
     if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Debug step
-        run: |
-          echo "workflow_run: ${{toJSON(github.event.workflow_run)}}"
-          echo "workflow_run.head_sha: ${{github.event.workflow_run.head_sha}}"
+      # - name: Debug step
+      #   run: |
+      #     echo "workflow_run: ${{toJSON(github.event.workflow_run)}}"
+      #     echo "workflow_run.head_sha: ${{github.event.workflow_run.head_sha}}"
 
       - uses: actions/download-artifact@v4
         with:

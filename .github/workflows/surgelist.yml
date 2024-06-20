@@ -1,0 +1,17 @@
+name: Surge List
+
+on: [workflow_dispatch]
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Surge.sh
+        uses: actions/setup-node@v4
+
+      - run: npm install -g surge
+
+      - run: surge list
+        env:
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}

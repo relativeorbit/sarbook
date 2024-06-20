@@ -25,12 +25,9 @@ jobs:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
 
-      - name: List directory contents
+      - name: Run surge list
         run: |
-          pwd
-          ls -lh
-          ls *
-          du -sh *
+          surge list
 
       - name: Manage Surge deployment
         id: preview_step

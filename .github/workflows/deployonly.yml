@@ -37,7 +37,7 @@ jobs:
 
       - name: List directory contents
         run: |
-          ls ltrh html
+          ls -ltrh */*
 
       # - name: download dist artifact
       #   uses: dawidd6/action-download-artifact@v5
@@ -54,3 +54,4 @@ jobs:
           build: echo 'Uploading PR Preview to Surge!'
           dist: html
           failOnError: true
+          teardown: true

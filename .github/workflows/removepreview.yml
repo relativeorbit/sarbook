@@ -1,11 +1,12 @@
-name: PR Build
+name: PR Teardown
 
 on:
   pull_request_target:
     types: [closed]
 
 jobs:
-  teardown:
+  # NOTE: jobname must match deployonly.yml
+  preview:
     runs-on: ubuntu-latest
     steps:
       - name: Remove Surge.sh PR Preview

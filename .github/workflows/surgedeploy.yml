@@ -36,8 +36,9 @@ jobs:
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           dist: book/_build/html
-          teardown: 'true'
-          build: npm install -g surge
+          teardown: true
+          failOnError: true
+          # build: npm install -g surge
 
       - name: Format preview url
         id: format_url

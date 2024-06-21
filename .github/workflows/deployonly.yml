@@ -29,7 +29,8 @@ jobs:
 
       - name: Manage Surge deployment
         id: preview_step
-        uses: afc163/surge-preview@v1
+        #uses: afc163/surge-preview@v1
+        uses: scottyhq/surge-preview@pr-status
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
